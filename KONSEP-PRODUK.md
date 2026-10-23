@@ -121,6 +121,19 @@ Urutan: gerakan kasar (di udara/pasir) → garis & bentuk → huruf besar → hu
 > diserahkan ke dunia nyata lewat panduan off-screen — dan ini dijual sebagai *nilai lebih*,
 > bukan kelemahan.
 
+### 3.4 Strategi Audio — Hybrid (manusia + AI TTS)
+
+Audio adalah aset paling kritis sekaligus paling mahal. Keputusan: **hybrid**, dibagi
+berdasarkan jenis ucapan.
+
+| Jenis audio | Sumber | Alasan |
+|---|---|---|
+| **Bunyi fonem terisolasi** (/b/, /s/, /m/ murni) | **Rekam manusia** | [Kemungkinan besar] AI TTS dilatih pada ucapan mengalir, sering salah pada bunyi tunggal (menambah schwa "buh", atau menyebut nama huruf). Himpunan fonem kecil & tetap — rekam sekali selamanya, beban produksi rendah. |
+| **Kata, kalimat, instruksi, cerita** | **AI TTS neural** | Kualitas TTS modern sudah natural untuk ucapan mengalir; menang telak untuk skala & konten dinamis. |
+
+Prinsip: AI TTS dipakai untuk segala yang mengalir; **satu-satunya** yang tidak boleh diserahkan
+ke TTS adalah bunyi fonem tunggal — karena di situlah fondasi metode fonik bertumpu.
+
 ---
 
 ## 4. Strategi Bilingual (Indonesia + Inggris)
@@ -211,15 +224,47 @@ Jalur L2 (bahasa kedua) mengikuti struktur yang sama, dimulai setelah L1 stabil.
 - [x] Bahasa **dipisah** (jalur per bahasa), tidak dicampur.
 - [x] Metode: SSP (baca), CPA (hitung), progresi motorik (tulis).
 - [x] Metrik inti: **mastery**, bukan screen-time.
+- [x] **Audio hybrid**: fonem terisolasi = rekam manusia; ucapan mengalir = AI TTS (lihat §3.4).
+- [x] **L1 MVP = Bahasa Indonesia saja.** Inggris = ekspansi L2 setelah inti terbukti.
+      Mandarin = di luar lingkup model fonik (logografis), diperlakukan sebagai konteks bahasa
+      rumah untuk anak Cindo, bukan jalur calistung.
+- [x] **Device-first: tablet** (area sentuh & tracing); ponsel sekunder.
+- [x] **Stack: Flutter (Dart)** — satu basis kode tablet/ponsel/web, cocok dipelajari pemula,
+      kuat untuk interaksi kustom. Backend ditunda (fase awal 100% lokal di perangkat).
+- [x] **Tim: solo founder, belajar dari nol** → lingkup dipotong keras (lihat §10).
 
-## 9. Pertanyaan Terbuka (untuk diputuskan berikutnya)
+## 9. Lingkup MVP & Jalur Eksekusi (proposal)
 
-- Platform target (mobile iOS/Android, web, atau keduanya) & stack teknis.
+**Kendala penentu:** dibangun solo oleh pemula tanpa skill mobile. Maka MVP dipotong sampai
+tersisa **satu jalur, satu fase, dikerjakan sempurna**, dan pedagogi divalidasi sebelum
+membangun besar.
+
+**Lingkup MVP:**
+
+> **Jalur Membaca · Fase Awal (4–5 th) · Bahasa Indonesia.**
+> Loop fonik inti: bunyi huruf → blending suku kata (ba, bu, bi) → kata pertama (bu-ku).
+> Didampingi orang tua. Audio hybrid. Tanpa backend (lokal).
+
+Semua yang lain — menulis, berhitung, fase lain, adaptif penuh, bahasa Inggris — adalah
+**ekspansi setelah inti terbukti**, bukan bagian MVP.
+
+**Urutan eksekusi (validasi dulu):**
+
+1. **Prototipe non-app** (1–2 minggu, ~nol biaya): kartu cetak + audio ponsel, uji urutan
+   fonik ke 2–3 anak nyata. Membuktikan *metode* sebelum menulis kode.
+2. **Belajar Flutter sambil membangun MVP loop** — target web dulu (bisa diuji dari browser
+   tablet, tanpa rilis store).
+3. **Uji MVP digital** ke anak yang sama; bandingkan dengan prototipe kertas.
+4. Baru putuskan ekspansi berdasarkan hasil.
+
+## 10. Pertanyaan Terbuka (berikutnya)
+
 - Model monetisasi (yang tidak bertabrakan dengan prinsip anti-adiktif).
-- Lingkup L1 awal yang didukung (Indonesia + Inggris dulu; Mandarin kapan?).
-- Strategi produksi aset audio penutur asli (kualitas = biaya).
-- Bentuk & kedalaman penilaian penguasaan dalam app.
-- Kebutuhan validasi dengan pendidik/ahli PAUD sebelum rilis.
+- Detail urutan fonem Bahasa Indonesia untuk Fase Awal (himpunan & urutan pengenalan).
+- Bentuk & kedalaman penilaian penguasaan (mastery check) dalam app.
+- Produksi rekaman fonem manusia: siapa penutur, standar kualitas, berapa bunyi.
+- Pilihan penyedia AI TTS Bahasa Indonesia & lisensinya.
+- Validasi dengan pendidik/ahli PAUD sebelum rilis.
 
 ---
 
