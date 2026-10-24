@@ -85,6 +85,7 @@ export function KartuBunyi({
   onTekan,
   className = '',
   ariaLabel,
+  polos = false,
 }: {
   label: string
   tanda?: 'titik' | 'busur' | 'tanpa'
@@ -92,17 +93,35 @@ export function KartuBunyi({
   onTekan?: () => void
   className?: string
   ariaLabel?: string
+  /** Tanpa warna vokal/konsonan: dipakai di pilihan jawaban agar warna tidak membocorkan jawaban. */
+  polos?: boolean
 }) {
+  const grup = label.length === 1 ? (VOKAL.has(label) ? 'grup-vokal' : 'grup-konsonan') : ''
   return (
     <button
       type="button"
-      className={`kartu-bunyi ukuran-${ukuran} ${className}`}
+      className={`kartu-bunyi ukuran-${ukuran} ${polos ? 'polos' : grup} ${className}`}
       onClick={onTekan}
       aria-label={ariaLabel ?? `Dengar bunyi ${label}`}
     >
-      <span className="huruf">{label}</span>
+      <span className="huruf">{polos ? label : <HurufBerwarna teks={label} />}</span>
       {tanda !== 'tanpa' && <span className={`tanda tanda-${tanda}`} aria-hidden="true" />}
     </button>
+  )
+}
+
+const VOKAL = new Set(['a', 'i', 'u', 'e', 'o'])
+
+/** Tiap huruf diberi kelas vokal/konsonan agar tema bisa mewarnainya (konvensi Montessori). */
+export function HurufBerwarna({ teks }: { teks: string }) {
+  return (
+    <>
+      {[...teks].map((c, i) => (
+        <span key={i} className={VOKAL.has(c) ? 'h-vokal' : 'h-konsonan'}>
+          {c}
+        </span>
+      ))}
+    </>
   )
 }
 

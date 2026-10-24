@@ -15,8 +15,8 @@ Metode mengikuti bukti riset terkuat: **Systematic Synthetic Phonics (fonik buny
 membaca, **pendekatan CPA (Concrete–Pictorial–Abstract)** untuk berhitung, dan **progresi
 motorik bertahap** untuk menulis. Produk **adaptif berbasis penguasaan (mastery)**, mendukung
 anak lokal WNI, anak Tionghoa-Indonesia, dan bilingual dengan **jalur bahasa terpisah** (bukan
-dicampur). Target rasa produk: tenang, dewasa, tidak norak — kualitas yang melahirkan
-kebermanfaatan, lalu loyalitas.
+dicampur). Target rasa produk: cerah dan ceria, tapi terarah dan tidak norak — kualitas yang
+melahirkan kebermanfaatan, lalu loyalitas.
 
 ---
 
@@ -31,8 +31,9 @@ diferensiasinya dan jatuh ke kelas "app calistung biasa".
    metode yang punya basis riset (lihat §3). Tidak ada fitur "karena kelihatan keren".
 3. **Fonik bunyi yang akurat.** Ajarkan *bunyi* huruf (fonem), bukan nama huruf. Audio direkam
    penutur asli berkualitas, bukan text-to-speech murahan. (Ini kesalahan #1 app lokal.)
-4. **Desain menahan diri (restraint).** "Tidak norak" = minim warna neon, minim animasi/suara
-   ramai, tanpa reward gacha-like. Estetika tenang, tipografi bersih, banyak ruang kosong.
+4. **Cerah, tapi setiap warna punya tugas.** "Tidak norak" bukan berarti kalem, tapi tidak ada
+   elemen yang berebut perhatian dengan huruf. Warna cerah boleh selama bermakna (lihat §6);
+   minim animasi/suara ramai, tanpa reward gacha-like, tipografi bersih, ruang kosong lega.
 5. **Pendamping manusia untuk usia dini.** Anak 3–4 tahun belajar paling efektif lewat
    interaksi dua arah (serve-and-return), bukan layar sendirian. App memosisikan orang tua
    sebagai *co-player*, bukan pengawas.
@@ -169,12 +170,28 @@ Jalur L2 (bahasa kedua) mengikuti struktur yang sama, dimulai setelah L1 stabil.
 
 ## 6. Prinsip Desain & Pengalaman
 
-### Rasa visual ("tidak norak")
+### Rasa visual: cerah terarah
 
-- Palet warna **lembut & terbatas**; hindari neon jenuh.
-- Tipografi bersih, ukuran besar, kontras cukup; banyak ruang kosong (white space).
-- Karakter/ilustrasi secukupnya — mendukung konten, bukan mendominasi.
-- Referensi rasa: estetika Montessori-modern, tenang, "mahal tapi hangat".
+Arah ini dipilih 2026-10-24 setelah membandingkan tiga opsi di layar nyata: tema kalem
+terakota, cerah terarah, dan ala Kahoot. Ala Kahoot ditolak karena warnanya hanya bergantung
+posisi (hijau "benar" sama dengan hijau kartu biasa) dan huruf putih di kartu kuning gagal
+kontras.
+
+| Warna | Tugas | Catatan |
+|---|---|---|
+| **Biru** | Vokal (a, i, u, ...) | Konvensi alfabet Montessori |
+| **Merah** | Konsonan (m, b, p, ...) | "mama" tampil merah-biru-merah-biru: pola KV terlihat |
+| **Kuning** | Tombol aksi | Teks gelap di atas kuning, tepi emas tua |
+| **Hijau** | Berhasil / selesai saja | Tidak dipakai untuk hal lain |
+| **Oranye** | Penanda suku kata (busur) & fokus | Bukan untuk teks biasa (kontras kurang) |
+| Kuning muda + putih | Latar & kartu | Huruf tetap fokus utama layar |
+
+Aturan:
+- **Pilihan jawaban tetap polos** (tanpa warna vokal/konsonan), agar warna tidak membocorkan
+  jawaban ("pilih yang biru").
+- Semua teks wajib lolos WCAG AA; nilai kontras dicatat di kepala `src/styles.css`.
+- Tipografi: Andika (font SIL untuk pembaca pemula), ukuran besar, ruang kosong lega.
+- Karakter/ilustrasi secukupnya, mendukung konten, bukan mendominasi.
 
 ### Interaksi
 
@@ -229,6 +246,8 @@ Jalur L2 (bahasa kedua) mengikuti struktur yang sama, dimulai setelah L1 stabil.
       Mandarin = di luar lingkup model fonik (logografis), diperlakukan sebagai konteks bahasa
       rumah untuk anak Cindo, bukan jalur calistung.
 - [x] **Device-first: tablet** (area sentuh & tracing); ponsel sekunder.
+- [x] **Warna: cerah terarah** (biru = vokal, merah = konsonan, kuning = aksi, hijau = berhasil).
+      Menggantikan tema kalem terakota; bukan tiruan Kahoot (lihat §6).
 - [x] **Platform: PWA (web)** yang responsif untuk ponsel, tablet, dan laptop, dengan prioritas
       desain tablet. Stack: React + Vite + TypeScript. Backend ditunda (MVP 100% lokal).
       *(Sebelumnya Flutter. Diganti karena app dibangun lewat vibe coding: stack web punya

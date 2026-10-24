@@ -95,7 +95,7 @@ export function Beranda({
           return (
             <li
               key={u.huruf}
-              className={`jalur-huruf ${selesai ? 'selesai' : ''} ${kini ? 'kini' : ''}`}
+              className={`jalur-huruf grup-${u.jenis} ${selesai ? 'selesai' : ''} ${kini ? 'kini' : ''}`}
               aria-label={`Huruf ${u.huruf}: ${selesai ? 'selesai' : kini ? 'berikutnya' : 'belum'}`}
             >
               <span className="huruf" aria-hidden="true">

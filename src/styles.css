@@ -1,28 +1,36 @@
 /*
- * Alasan keputusan desain (antislop R-31):
- * - Latar kertas hangat: huruf tampil seperti di kartu cetak, tenang untuk mata anak.
- * - Satu aksen terakota, khusus untuk titik bunyi & aksi utama: anak belajar
- *   "yang berwarna = yang bisa diketuk / berbunyi".
- * - Hijau daun hanya untuk status "berhasil/selesai", tidak dipakai di tempat lain.
+ * Alasan keputusan desain (antislop R-31). Arah: "cerah terarah", tiap warna punya satu tugas.
+ * - Biru = vokal, merah = konsonan (konvensi alfabet Montessori): anak melihat pola
+ *   konsonan-vokal di suku kata dan kata ("mama" = merah biru merah biru).
+ * - Kuning = tombol aksi. Hijau = berhasil/selesai saja. Oranye = penanda suku kata & fokus.
+ * - Latar kuning muda, kartu putih: ceria, tapi huruf tetap fokus utama layar.
+ * - Pilihan jawaban di langkah Temukan sengaja polos, agar warna tidak membocorkan jawaban.
  * - Andika: font SIL untuk pembaca pemula, "a" dan "g" bertingkat satu seperti tulisan tangan.
- * - Bayangan tipis hanya di kartu yang bisa diketuk: menandai benda fisik yang bisa ditekan.
- * - Tema terang saja: metafora kertas & kartu cetak, dan konsistensi tampilan untuk anak.
- * Kontras (WCAG AA): tinta/kertas 13:1, tinta-lembut/kertas 6,4:1, aksen/kertas 5,3:1,
- * putih/aksen 6,0:1, daun/kertas 5,3:1.
+ * - Bayangan hanya di kartu yang bisa diketuk: menandai benda fisik yang bisa ditekan.
+ * - Tema terang saja: konsistensi tampilan untuk anak.
+ * Kontras (WCAG AA): tinta/kertas 13,7:1, tinta-lembut/kertas 7:1, vokal/kertas 5,2:1,
+ * konsonan/kertas 4,5:1, putih/vokal 5,7:1, putih/konsonan 5:1, tinta/tombol 9,9:1,
+ * daun/kertas 5,3:1, aksen-teks/kertas 4,9:1. Aksen oranye (3,2:1) hanya untuk elemen
+ * non-teks dan garis fokus. Tepi tombol & garis-tegas >= 3:1 terhadap latar.
  */
 :root {
-  --kertas: #f6f1e7;
-  --kartu: #fffaf1;
+  --kertas: #fff3d1;
+  --kartu: #ffffff;
   --tinta: #2b2622;
-  --tinta-lembut: #5e554c;
-  --aksen: #a3481f;
-  --aksen-tekan: #87391a;
-  --aksen-tipis: #f1dccd;
-  --daun: #4f6b4c;
-  --daun-tipis: #dde7d6;
-  --garis: #e3d9c8;
+  --tinta-lembut: #5b5147;
+  --vokal: #1565c0;
+  --konsonan: #d62828;
+  --tombol: #ffc93c;
+  --tombol-tepi: #a87700;
+  --aksen: #e8590c;
+  --aksen-teks: #b8440a;
+  --aksen-tipis: #ffe3b3;
+  --daun: #19733a;
+  --daun-tipis: #d3f2dc;
+  --garis: #f2dca8;
+  --garis-tegas: #8a7a66;
   --bahaya: #9b2c2c;
-  --bayang: 0 2px 0 #e0d4bf, 0 6px 18px rgb(80 60 30 / 0.08);
+  --bayang: 0 3px 0 #f0d79a, 0 8px 20px rgb(120 80 0 / 0.08);
   --huruf-besar: clamp(6rem, 30vmin, 15rem);
   --huruf-sedang: clamp(3.5rem, 17vmin, 8rem);
   color-scheme: light;
@@ -133,26 +141,28 @@ button {
 }
 
 .tombol {
-  background: var(--aksen);
-  color: #fff;
-  box-shadow: 0 3px 0 var(--aksen-tekan);
+  background: var(--tombol);
+  color: var(--tinta);
+  border-color: var(--tombol-tepi);
+  box-shadow: 0 4px 0 var(--tombol-tepi);
 }
 
 .tombol:active {
   transform: translateY(2px);
-  box-shadow: 0 1px 0 var(--aksen-tekan);
+  box-shadow: 0 1px 0 var(--tombol-tepi);
 }
 
 .tombol:disabled {
   background: var(--garis);
   color: var(--tinta-lembut);
+  border-color: var(--garis);
   box-shadow: none;
   cursor: not-allowed;
 }
 
 .tombol-kedua {
   background: var(--kartu);
-  border-color: var(--garis);
+  border-color: var(--garis-tegas);
 }
 
 .tombol-kedua:active {
@@ -171,16 +181,17 @@ button {
   font-size: 1.5rem;
 }
 
-/* Gerbang orang tua: isi terakota tumbuh selama ditahan. */
+/* Gerbang orang tua: isi oranye muda tumbuh selama ditahan. */
 .tombol-gerbang {
   min-height: 44px;
   padding: 0 14px;
   border-radius: 12px;
-  border: 1.5px solid var(--garis);
+  border: 1.5px solid var(--garis-tegas);
   color: var(--tinta-lembut);
   font-size: 0.9rem;
   white-space: nowrap;
   background: linear-gradient(to right, var(--aksen-tipis) calc(var(--p, 0) * 100%), var(--kartu) 0);
+  color: var(--tinta-lembut);
   -webkit-touch-callout: none;
 }
 
@@ -193,7 +204,7 @@ button {
   align-items: center;
   justify-content: center;
   background: var(--kartu);
-  border: 2px solid var(--garis);
+  border: 3px solid var(--garis);
   border-radius: 28px;
   box-shadow: var(--bayang);
   line-height: 1;
@@ -205,6 +216,7 @@ button {
 
 .kartu-bunyi .huruf {
   font-weight: 700;
+  line-height: 1;
 }
 
 .kartu-bunyi.ukuran-besar {
@@ -225,17 +237,39 @@ button {
   background: var(--aksen);
 }
 
+/* Warna vokal/konsonan. Kartu "polos" (pilihan jawaban) tidak memakai kelas ini. */
+.h-vokal {
+  color: var(--vokal);
+}
+
+.h-konsonan {
+  color: var(--konsonan);
+}
+
+.grup-vokal .tanda-titik {
+  background: var(--vokal);
+}
+
+.grup-konsonan .tanda-titik {
+  background: var(--konsonan);
+}
+
+/*
+ * Jarak titik/busur dalam em dari ukuran huruf (font-size ada di kartunya): ekor huruf p
+ * di Andika turun 0,24em di bawah garis dasar dan meluap 0,155em dari kotak baris
+ * (line-height 1). Margin 0,3em menyisakan celah ~0,15em di semua ukuran layar.
+ */
 .tanda-titik {
   width: clamp(12px, 2.6vmin, 22px);
   height: clamp(12px, 2.6vmin, 22px);
   border-radius: 50%;
-  margin-top: clamp(4px, 1.2vmin, 12px);
+  margin-top: 0.3em;
 }
 
 .tanda-busur {
   width: 70%;
   height: clamp(10px, 2.2vmin, 18px);
-  margin-top: clamp(4px, 1.2vmin, 12px);
+  margin-top: 0.3em;
   background: none;
   border: clamp(3px, 0.8vmin, 6px) solid var(--aksen);
   border-top: 0;
@@ -276,7 +310,8 @@ button {
   margin: 0;
   font-size: clamp(3.5rem, 15vmin, 8rem);
   font-weight: 700;
-  line-height: 1.1;
+  /* Cukup ruang untuk ekor huruf p (papa, pipi) agar tidak menempel ke kartu gambar. */
+  line-height: 1.3;
   letter-spacing: 0.02em;
 }
 
@@ -412,23 +447,6 @@ button {
   list-style: none;
 }
 
-/* Ponsel tegak: enam huruf dalam 3 x 2, kartu "baca" selebar penuh sebagai tujuan akhir. */
-@media (max-width: 560px) {
-  .jalur {
-    grid-template-columns: repeat(3, minmax(72px, 96px));
-  }
-  .jalur-huruf {
-    padding-block: 12px;
-  }
-  .jalur-huruf .huruf {
-    font-size: 3.2rem;
-  }
-  .jalur-tantangan {
-    grid-column: 1 / -1;
-    padding-block: 12px;
-  }
-}
-
 .jalur-huruf,
 .jalur-tantangan {
   display: flex;
@@ -444,34 +462,62 @@ button {
   line-height: 1;
 }
 
-.jalur-huruf .huruf {
+.jalur-huruf {
   font-size: clamp(2.4rem, 9vmin, 4.5rem);
+}
+
+.jalur-huruf .huruf {
   font-weight: 700;
+}
+
+.jalur-huruf.grup-vokal {
+  color: var(--vokal);
+}
+
+.jalur-huruf.grup-konsonan {
+  color: var(--konsonan);
 }
 
 .jalur-huruf .tanda-titik {
   background: var(--garis);
 }
 
+/* Huruf yang sudah selesai jadi kartu penuh berwarna: kemajuan terlihat dari jauh. */
 .jalur-huruf.selesai {
-  background: var(--kartu);
-  color: var(--tinta);
+  color: #fff;
+}
+
+.jalur-huruf.selesai.grup-vokal {
+  background: var(--vokal);
+  border-color: var(--vokal);
+}
+
+.jalur-huruf.selesai.grup-konsonan {
+  background: var(--konsonan);
+  border-color: var(--konsonan);
 }
 
 .jalur-huruf.selesai .tanda-titik {
-  background: var(--daun);
+  background: #fff;
 }
 
 .jalur-huruf.kini,
 .jalur-tantangan.kini {
   background: var(--kartu);
   border-color: var(--aksen);
-  color: var(--tinta);
   box-shadow: var(--bayang);
 }
 
-.jalur-huruf.kini .tanda-titik {
-  background: var(--aksen);
+.jalur-tantangan.kini {
+  color: var(--tinta);
+}
+
+.jalur-huruf.kini.grup-vokal .tanda-titik {
+  background: var(--vokal);
+}
+
+.jalur-huruf.kini.grup-konsonan .tanda-titik {
+  background: var(--konsonan);
 }
 
 .jalur-tantangan {
@@ -517,6 +563,22 @@ button {
 
 .pesan-beranda b {
   color: var(--tinta);
+}
+
+/* Ponsel tegak: enam huruf dalam 3 x 2, kartu "baca" selebar penuh sebagai tujuan akhir.
+   Harus setelah aturan dasar .jalur-* agar tidak tertimpa. */
+@media (max-width: 560px) {
+  .jalur {
+    grid-template-columns: repeat(3, minmax(72px, 96px));
+  }
+  .jalur-huruf {
+    padding-block: 12px;
+    font-size: 3.2rem;
+  }
+  .jalur-tantangan {
+    grid-column: 1 / -1;
+    padding-block: 12px;
+  }
 }
 
 /* ---------- Hasil & akhir sesi ---------- */
@@ -651,7 +713,7 @@ button {
 details summary {
   cursor: pointer;
   padding: 10px 0;
-  color: var(--aksen);
+  color: var(--aksen-teks);
   font-weight: 700;
 }
 
@@ -795,8 +857,6 @@ details summary {
   }
   .jalur-huruf {
     padding-block: 6px;
-  }
-  .jalur-huruf .huruf {
     font-size: 2.2rem;
   }
   .jalur-tantangan {

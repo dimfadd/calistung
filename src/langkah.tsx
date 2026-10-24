@@ -11,6 +11,7 @@ import {
 import { hentikan, jalurFonem, jalurSuku, putar } from './lib/audio'
 import {
   Bingkai,
+  HurufBerwarna,
   Instruksi,
   KartuBunyi,
   PetunjukOrtu,
@@ -229,6 +230,7 @@ function Temukan({
             label={x}
             ukuran="sedang"
             tanda="tanpa"
+            polos
             ariaLabel={`Huruf ${x}`}
             className={pujian && x === h ? 'benar' : salah?.huruf === x ? 'goyang' : ''}
             onTekan={() => pilih(x)}
@@ -469,7 +471,7 @@ export function Cek({
     >
       <Instruksi>Biarkan anak membaca sendiri, lalu mengetuk gambarnya.</Instruksi>
       <p className="kata-tulisan" lang="id">
-        {kata}
+        <HurufBerwarna teks={kata} />
       </p>
       <div className="deret-pilihan">
         {pilihan.map((o) => (
