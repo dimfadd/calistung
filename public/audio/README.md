@@ -1,8 +1,9 @@
 # Rekaman Suara
 
 Bunyi huruf (fonem) dan suku kata **wajib direkam manusia**, tidak boleh memakai TTS
-(lihat `SPEK-MVP-FONIK.md` §3.4 dan §6). Selama file belum ada, app menampilkan petunjuk
-agar orang tua yang mengucapkan bunyinya.
+(lihat `SPEK-MVP-FONIK.md` §3.4 dan §6). File di folder ini adalah rekaman **bawaan**.
+Bila orang tua merekam suaranya sendiri lewat app, suara orang tua yang dipakai. Bila tidak ada
+keduanya, app menampilkan petunjuk agar orang tua yang mengucapkan bunyinya.
 
 ## Yang dibutuhkan Tahap 1 (15 file)
 

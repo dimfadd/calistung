@@ -109,6 +109,17 @@ Setiap bunyi baru diajarkan lewat enam langkah, dengan urutan tetap:
 
 Total rekaman manusia untuk MVP: **±27 file**. Jumlah ini kecil dan cukup direkam sekali.
 
+**Sumber rekaman (urutan prioritas):**
+1. **Suara orang tua**, direkam lewat menu "Rekam suara Anda" di area orang tua. App memotong
+   hening dan menyeragamkan volume, orang tua wajib mendengar ulang sebelum menyimpan, dan
+   rekaman tersimpan hanya di perangkat (IndexedDB). Rekaman tanpa suara ditolak.
+2. **File bawaan** di `public/audio/` (rekaman penutur profesional, bila sudah ada).
+3. Bila keduanya tidak ada: petunjuk agar orang tua mengucapkan bunyinya langsung.
+
+Risiko yang dijaga: orang tua merekam nama huruf ("be") alih-alih bunyinya (/b/). Pengamannya
+petunjuk cara mengucap, peringatan khusus untuk b dan p, dan wajib dengar ulang; app tidak
+bisa mendeteksi salah ucap secara otomatis.
+
 > Catatan suku kata: belum ada kepastian apakah AI TTS mengucapkan suku kata tunggal ("ba")
 > dengan benar. Seringkali TTS justru membacanya sebagai ejaan huruf ("be-a") [Menebak].
 > Karena itu, untuk MVP suku kata direkam manusia. Uji AI TTS secara terpisah, dan pindahkan

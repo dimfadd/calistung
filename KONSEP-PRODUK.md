@@ -132,6 +132,10 @@ berdasarkan jenis ucapan.
 | **Bunyi fonem terisolasi** (/b/, /s/, /m/ murni) | **Rekam manusia** | [Kemungkinan besar] AI TTS dilatih pada ucapan mengalir, sering salah pada bunyi tunggal (menambah schwa "buh", atau menyebut nama huruf). Himpunan fonem kecil & tetap — rekam sekali selamanya, beban produksi rendah. |
 | **Kata, kalimat, instruksi, cerita** | **AI TTS neural** | Kualitas TTS modern sudah natural untuk ucapan mengalir; menang telak untuk skala & konten dinamis. |
 
+Rekaman manusia untuk fonem bisa berasal dari **suara orang tua sendiri** (direkam lewat app,
+tersimpan hanya di perangkat) atau dari penutur profesional; suara orang tua didahulukan.
+Rinciannya di `SPEK-MVP-FONIK.md` §6.
+
 Prinsip: AI TTS dipakai untuk segala yang mengalir; **satu-satunya** yang tidak boleh diserahkan
 ke TTS adalah bunyi fonem tunggal — karena di situlah fondasi metode fonik bertumpu.
 
@@ -286,6 +290,9 @@ Semua yang lain — menulis, berhitung, fase lain, adaptif penuh, bahasa Inggris
 - Validasi urutan bunyi & ambang mastery (`SPEK-MVP-FONIK.md` §3 & §5) lewat uji ke anak.
 - Produksi rekaman fonem: siapa penuturnya (jumlah & standar sudah ditetapkan di spec §6).
 - Pilihan penyedia AI TTS Bahasa Indonesia & lisensinya.
+- **Akun & sinkron antar-perangkat.** Saat ini setiap keluarga otomatis terpisah karena data
+  (progres & suara orang tua) tersimpan per perangkat. Akun baru dibutuhkan bila data harus
+  ikut pindah perangkat; konsekuensinya backend dan kewajiban UU PDP untuk data anak & suara.
 - Validasi dengan pendidik/ahli PAUD sebelum rilis.
 
 ---

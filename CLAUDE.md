@@ -8,8 +8,10 @@ Aplikasi calistung (PWA) untuk anak 3–7 tahun. Sebelum membangun apa pun, baca
 - Ajarkan **bunyi** huruf (/m/), bukan **nama** huruf ("em").
 - Ikuti urutan bunyi di `SPEK-MVP-FONIK.md` §3. Jangan pakai urutan alfabet.
 - Di langkah cek-membaca, **jangan putar audio kata secara otomatis**.
-- Audio fonem dan suku kata wajib memakai file rekaman manusia di folder audio.
+- Audio fonem dan suku kata wajib rekaman manusia: suara orang tua (direkam lewat app,
+  disimpan di IndexedDB) didahulukan, lalu file di `public/audio/`.
   **Jangan pernah membuat audio fonem atau suku kata dengan TTS.**
+- Suara orang tua & data anak hanya disimpan di perangkat; jangan mengirimnya ke server.
 - Sesi dibatasi 10 menit. Dilarang memakai gacha, streak yang menekan, reward acak, iklan,
   atau pelacak pihak ketiga.
 - Pengaturan dan dashboard harus dilindungi gerbang orang tua.

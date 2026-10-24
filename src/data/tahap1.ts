@@ -86,3 +86,22 @@ export const AMBANG_LOLOS = 4
 export const HARI_LOLOS_DIBUTUHKAN = 2
 /** Batas durasi sesi (SPEK §5). */
 export const BATAS_SESI_MS = 10 * 60 * 1000
+
+export interface ItemRekaman {
+  /** Id rekaman, sama dengan id di lib/audio (mis. "fonem/m", "suku/ma"). */
+  id: string
+  label: string
+  jenis: 'fonem' | 'suku'
+  petunjuk: string
+}
+
+/** Bunyi yang butuh rekaman manusia di Tahap 1 (subset dari daftar SPEK §6). */
+export const REKAMAN_TAHAP1: ItemRekaman[] = [
+  ...UNITS.map((u): ItemRekaman => ({ id: `fonem/${u.huruf}`, label: u.huruf, jenis: 'fonem', petunjuk: u.petunjuk })),
+  ...UNITS.flatMap((u) => u.sukuKata ?? []).map(
+    (s): ItemRekaman => ({ id: `suku/${s}`, label: s, jenis: 'suku', petunjuk: `"${s}", diucapkan biasa, satu kali, dengan jelas` }),
+  ),
+]
+
+/** Batas lama satu rekaman orang tua. */
+export const BATAS_REKAM_MS = 3000

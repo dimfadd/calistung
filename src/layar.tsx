@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { HARI_LOLOS_DIBUTUHKAN, SOAL_PER_SET, UNITS } from './data/tahap1'
-import { adaRekaman, hentikan, jalurFonem, jalurSuku, putar, ttsTersedia } from './lib/audio'
+import { HARI_LOLOS_DIBUTUHKAN, REKAMAN_TAHAP1, SOAL_PER_SET, UNITS } from './data/tahap1'
+import { hentikan, putar, sumberRekaman, ttsTersedia, type SumberRekaman } from './lib/audio'
+import { RekamSuara } from './RekamSuara'
 import {
   hariLolos,
   kegiatanBerikutnya,
@@ -32,6 +33,10 @@ export function Pengenalan({ onSiap }: { onSiap: () => void }) {
           <li>
             <b>Sesi paling lama 10 menit.</b> Setelah itu app berhenti sendiri. Sedikit tapi rutin setiap hari
             lebih baik daripada lama sekali-sekali.
+          </li>
+          <li>
+            <b>Rekam suara Anda untuk bunyi huruf</b> (di menu Untuk orang tua), agar anak belajar dengan suara
+            orang tuanya. Sebelum direkam, app meminta Anda mengucapkan bunyinya langsung.
           </li>
           <li>
             <b>Pasang ke layar utama</b> (di iPad/iPhone: tombol Bagikan, lalu "Tambahkan ke Layar Utama"). Tanpa
@@ -199,12 +204,6 @@ export function SelesaiSesi({ onOrtu }: { onOrtu: () => void }) {
   )
 }
 
-/** File rekaman yang dibutuhkan Tahap 1 (subset dari daftar SPEK §6). */
-const REKAMAN_TAHAP1 = [
-  ...UNITS.map((u) => ({ nama: `fonem/${u.huruf}.mp3`, jalur: jalurFonem(u.huruf) })),
-  ...UNITS.flatMap((u) => u.sukuKata ?? []).map((s) => ({ nama: `suku/${s}.mp3`, jalur: jalurSuku(s) })),
-]
-
 function formatTanggal(t: string) {
   const [y, m, d] = t.split('-').map(Number)
   return new Date(y, m - 1, d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -225,22 +224,38 @@ export function AreaOrtu({
   onSesiBaru: () => void
   onHapus: () => void
 }) {
-  const [hilang, setHilang] = useState<string[] | null>(null)
+  const [sumber, setSumber] = useState<SumberRekaman[] | null>(null)
+  const [halaman, setHalaman] = useState<'utama' | 'rekam'>('utama')
   const dialog = useRef<HTMLDialogElement>(null)
   const tts = ttsTersedia()
 
   useEffect(() => {
+    if (halaman !== 'utama') return
     hentikan()
     let aktif = true
-    Promise.all(REKAMAN_TAHAP1.map((r) => adaRekaman(r.jalur))).then((ada) => {
-      if (aktif) setHilang(REKAMAN_TAHAP1.filter((_, i) => !ada[i]).map((r) => r.nama))
+    setSumber(null)
+    Promise.all(REKAMAN_TAHAP1.map((r) => sumberRekaman(r.id))).then((h) => {
+      if (aktif) setSumber(h.map((x) => x.sumber))
     })
     return () => {
       aktif = false
     }
-  }, [])
+  }, [halaman])
+
+  if (halaman === 'rekam')
+    return (
+      <RekamSuara
+        onKembali={() => {
+          // Kosongkan status lama agar angka sebelum merekam tidak sempat tampil.
+          setSumber(null)
+          setHalaman('utama')
+        }}
+      />
+    )
 
   const lolos = hariLolos(progres).length
+  const jumlahOrtu = sumber?.filter((x) => x === 'ortu').length ?? 0
+  const kosong = sumber ? REKAMAN_TAHAP1.filter((_, i) => sumber[i] === null).map((r) => r.label) : []
 
   return (
     <div className="halaman-ortu">
@@ -295,37 +310,42 @@ export function AreaOrtu({
           )}
         </section>
 
+        <section aria-labelledby="judul-audio">
+          <h2 id="judul-audio">Suara bunyi huruf</h2>
+          <p>
+            Bunyi huruf dan suku kata selalu diputar dari suara manusia, tidak pernah dari suara komputer, karena
+            suara komputer sering salah mengucapkan bunyi huruf. Rekam suara Anda sendiri agar anak belajar dengan
+            suara orang tuanya.
+          </p>
+          {sumber === null ? (
+            <p className="ortu-kosong">Memeriksa rekaman…</p>
+          ) : (
+            <p>
+              <b>
+                {jumlahOrtu} dari {REKAMAN_TAHAP1.length}
+              </b>{' '}
+              bunyi sudah memakai suara Anda.
+              {kosong.length > 0 &&
+                ` ${kosong.length} bunyi belum punya rekaman sama sekali (${kosong.join(', ')}). Selama itu, app meminta Anda mengucapkannya langsung saat anak belajar.`}
+            </p>
+          )}
+          <div className="ortu-aksi">
+            <button type="button" className="tombol" onClick={() => setHalaman('rekam')}>
+              {jumlahOrtu > 0 ? 'Kelola suara Anda' : 'Rekam suara Anda'}
+            </button>
+          </div>
+          <p>
+            Suara komputer Bahasa Indonesia untuk instruksi dan kata:{' '}
+            <b>{tts ? 'tersedia di perangkat ini' : 'tidak tersedia di perangkat ini'}</b>.
+            {!tts && ' Bacakan teks instruksi di layar untuk anak.'}
+          </p>
+        </section>
+
         <section aria-labelledby="judul-prototipe">
           <h2 id="judul-prototipe">Tentang prototipe ini</h2>
           <p>
             Gambar kata (mama, bumi, ubi, dan lainnya) adalah ilustrasi sederhana buatan tahap prototipe, belum
             karya ilustrator.
-          </p>
-        </section>
-
-        <section aria-labelledby="judul-audio">
-          <h2 id="judul-audio">Rekaman suara</h2>
-          {hilang === null ? (
-            <p className="ortu-kosong">Memeriksa file rekaman…</p>
-          ) : hilang.length === 0 ? (
-            <p>Semua {REKAMAN_TAHAP1.length} rekaman bunyi Tahap 1 tersedia.</p>
-          ) : (
-            <>
-              <p>
-                {REKAMAN_TAHAP1.length - hilang.length} dari {REKAMAN_TAHAP1.length} rekaman bunyi tersedia. Selama
-                rekaman belum ada, app menampilkan petunjuk agar Anda yang mengucapkan bunyinya. App sengaja tidak
-                memakai suara komputer untuk bunyi huruf, karena sering salah ucap.
-              </p>
-              <details>
-                <summary>Lihat file yang belum ada ({hilang.length})</summary>
-                <p className="ortu-file">{hilang.join(', ')}</p>
-              </details>
-            </>
-          )}
-          <p>
-            Suara komputer Bahasa Indonesia untuk instruksi dan kata:{' '}
-            <b>{tts ? 'tersedia di perangkat ini' : 'tidak tersedia di perangkat ini'}</b>.
-            {!tts && ' Bacakan teks instruksi di layar untuk anak.'}
           </p>
         </section>
 

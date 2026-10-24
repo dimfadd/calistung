@@ -737,6 +737,131 @@ details summary {
   font-size: 1.05rem;
 }
 
+/* ---------- Rekam suara orang tua ---------- */
+
+.ortu-galat,
+.rekam-panel {
+  margin: 16px 0;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--kartu);
+}
+
+.ortu-galat {
+  border: 2px solid var(--bahaya);
+  color: var(--bahaya);
+}
+
+.ortu-galat-teks {
+  color: var(--bahaya);
+}
+
+.rekam-panel {
+  border: 2px solid var(--garis-tegas);
+  box-shadow: var(--bayang);
+}
+
+.rekam-jenis {
+  margin: 0;
+  color: var(--tinta-lembut);
+  font-size: 0.95rem;
+}
+
+.rekam-label {
+  margin: 0;
+  font-size: clamp(3.5rem, 12vw, 5rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.rekam-petunjuk {
+  margin: 4px 0;
+  font-size: 1.1rem;
+}
+
+.rekam-peringatan {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px dashed var(--aksen);
+  background: var(--aksen-tipis);
+}
+
+.rekam-keadaan {
+  margin: 10px 0 0;
+  min-height: 1.5em;
+  font-weight: 700;
+}
+
+.rekam-merekam {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Titik berdenyut: tanda mikrofon sedang aktif (fungsi, bukan hiasan). */
+.rekam-titik {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--aksen);
+  animation: denyut 1s ease-in-out infinite;
+}
+
+@keyframes denyut {
+  50% { opacity: 0.3; }
+}
+
+.rekam-pesan {
+  margin: 12px 0 0;
+  color: var(--daun);
+  font-weight: 700;
+}
+
+.rekam-daftar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rekam-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 72px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 2px solid var(--garis);
+  background: var(--kartu);
+}
+
+.rekam-item.pilih {
+  border-color: var(--aksen);
+  box-shadow: var(--bayang);
+}
+
+.rekam-item-label {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.rekam-status {
+  font-size: 0.8rem;
+  color: var(--tinta-lembut);
+  white-space: nowrap;
+}
+
+.rekam-status.status-ortu {
+  color: var(--daun);
+  font-weight: 700;
+}
+
 .dialog {
   max-width: min(440px, calc(100vw - 32px));
   border: 0;

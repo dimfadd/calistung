@@ -1,12 +1,16 @@
 // Aturan SPEK §3.4 & §6: fonem dan suku kata HANYA dari rekaman manusia.
-// TTS hanya dipakai untuk kata dan instruksi. Bila rekaman fonem belum ada,
-// UI meminta orang tua mengucapkannya; app tidak pernah menggantinya dengan TTS.
+// TTS hanya dipakai untuk kata dan instruksi. Urutan sumber rekaman: suara orang tua
+// (direkam lewat app), lalu file bawaan di public/audio/. Bila keduanya tidak ada, UI
+// meminta orang tua mengucapkannya; app tidak pernah menggantinya dengan TTS.
+
+import { urlRekamanOrtu } from './rekamanOrtu'
 
 const BASE = import.meta.env.BASE_URL
 
-export const jalurFonem = (huruf: string) => `${BASE}audio/fonem/${huruf}.mp3`
-export const jalurSuku = (suku: string) => `${BASE}audio/suku/${suku}.mp3`
-export const jalurKata = (kata: string) => `${BASE}audio/kata/${kata}.mp3`
+/** Id rekaman, mis. "fonem/m", "suku/ma", "kata/mama". */
+export const jalurFonem = (huruf: string) => `fonem/${huruf}`
+export const jalurSuku = (suku: string) => `suku/${suku}`
+export const jalurKata = (kata: string) => `kata/${kata}`
 
 export type Suara =
   | { jenis: 'tts'; teks: string }
@@ -15,22 +19,35 @@ export type Suara =
   | { jenis: 'kata'; kata: string }
   | { jenis: 'jeda'; ms: number }
 
-const statusRekaman = new Map<string, Promise<boolean>>()
+const statusBawaan = new Map<string, Promise<boolean>>()
 
 /**
- * Cek apakah file rekaman benar-benar ada. Server dev mengembalikan index.html
+ * Cek apakah file rekaman bawaan benar-benar ada. Server dev mengembalikan index.html
  * untuk file yang hilang, jadi yang dicek adalah tipe kontennya, bukan status saja.
  */
-export function adaRekaman(jalur: string): Promise<boolean> {
-  let status = statusRekaman.get(jalur)
+function adaBawaan(id: string): Promise<boolean> {
+  let status = statusBawaan.get(id)
   if (!status) {
-    status = fetch(jalur, { method: 'GET' })
+    status = fetch(fileBawaan(id))
       .then((res) => res.ok && (res.headers.get('content-type') ?? '').startsWith('audio'))
       .catch(() => false)
-    statusRekaman.set(jalur, status)
+    statusBawaan.set(id, status)
   }
   return status
 }
+
+const fileBawaan = (id: string) => `${BASE}audio/${id}.mp3`
+
+export type SumberRekaman = 'ortu' | 'bawaan' | null
+
+export async function sumberRekaman(id: string): Promise<{ sumber: SumberRekaman; url: string | null }> {
+  const ortu = await urlRekamanOrtu(id)
+  if (ortu) return { sumber: 'ortu', url: ortu }
+  if (await adaBawaan(id)) return { sumber: 'bawaan', url: fileBawaan(id) }
+  return { sumber: null, url: null }
+}
+
+export const adaRekaman = (id: string) => sumberRekaman(id).then((s) => s.sumber !== null)
 
 let suaraIndonesia: SpeechSynthesisVoice | null | undefined
 
@@ -81,18 +98,26 @@ export function hentikan() {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel()
 }
 
-function putarRekaman(jalur: string, g: number): Promise<void> {
-  return adaRekaman(jalur).then(
-    (ada) =>
-      new Promise<void>((selesai) => {
-        if (!ada || g !== generasi) return selesai()
-        pemutar.src = jalur
-        pemutar.onended = () => selesai()
-        pemutar.onerror = () => selesai()
-        pemutar.onpause = () => selesai()
-        pemutar.play().catch(() => selesai())
-      }),
-  )
+function putarUrlDalam(url: string, g: number): Promise<void> {
+  return new Promise<void>((selesai) => {
+    if (g !== generasi) return selesai()
+    pemutar.src = url
+    pemutar.onended = () => selesai()
+    pemutar.onerror = () => selesai()
+    pemutar.onpause = () => selesai()
+    pemutar.play().catch(() => selesai())
+  })
+}
+
+async function putarRekaman(id: string, g: number): Promise<void> {
+  const { url } = await sumberRekaman(id)
+  if (url) await putarUrlDalam(url, g)
+}
+
+/** Putar satu URL audio (mis. pratinjau rekaman yang belum disimpan). */
+export function putarUrl(url: string): Promise<void> {
+  hentikan()
+  return putarUrlDalam(url, generasi)
 }
 
 function bicara(teks: string, g: number): Promise<void> {

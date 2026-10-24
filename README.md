@@ -27,8 +27,13 @@ aktif bila app di-hosting lewat HTTPS (lihat bagian Rilis).
 
 ## Audio
 
-Rekaman bunyi huruf dan suku kata belum ada. Daftar file dan standarnya ada di
-`public/audio/README.md`. Selama file belum ada, app meminta orang tua mengucapkan bunyinya.
+Bunyi huruf dan suku kata diputar dari rekaman manusia, dengan urutan:
+
+1. Suara orang tua, direkam lewat **Untuk orang tua → Rekam suara Anda** (butuh HTTPS,
+   misalnya link Vercel; tersimpan hanya di perangkat).
+2. File bawaan di `public/audio/` (daftar dan standarnya di `public/audio/README.md`).
+3. Bila keduanya tidak ada, app meminta orang tua mengucapkan bunyinya langsung.
+
 Bunyi huruf tidak pernah dibuat dengan TTS.
 
 ## Rilis
