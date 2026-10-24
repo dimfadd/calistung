@@ -195,6 +195,12 @@ button {
   -webkit-touch-callout: none;
 }
 
+.tombol-gerbang.petunjuk {
+  border-color: var(--aksen);
+  color: var(--tinta);
+  font-weight: 700;
+}
+
 /* ---------- Kartu bunyi (motif identitas: titik & busur bunyi) ---------- */
 
 .kartu-bunyi {

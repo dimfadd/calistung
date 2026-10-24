@@ -27,42 +27,67 @@ export function Bingkai({
 
 const LAMA_TAHAN_MS = 3000
 
-/** Gerbang orang tua: tombol harus ditahan 3 detik (sentuh, mouse, atau Enter/Spasi). */
+/**
+ * Gerbang orang tua: tombol harus ditahan 3 detik (sentuh, mouse, atau Enter/Spasi).
+ * Bila dilepas terlalu cepat (diklik biasa), label berubah jadi "Tahan 3 detik" agar
+ * orang tua tahu caranya membuka.
+ */
 export function GerbangOrtu({ onBuka }: { onBuka: () => void }) {
   const [persen, setPersen] = useState(0)
+  const [petunjuk, setPetunjuk] = useState(false)
   const bingkai = useRef(0)
+  const menahan = useRef(false)
+  const timerPetunjuk = useRef(0)
 
-  const batal = () => {
+  const berhenti = () => {
     cancelAnimationFrame(bingkai.current)
+    menahan.current = false
     setPersen(0)
+  }
+
+  /** Dilepas sebelum 3 detik: tampilkan cara membuka. */
+  const lepas = () => {
+    if (!menahan.current) return
+    berhenti()
+    setPetunjuk(true)
+    clearTimeout(timerPetunjuk.current)
+    timerPetunjuk.current = window.setTimeout(() => setPetunjuk(false), 2500)
   }
 
   const mulai = () => {
     cancelAnimationFrame(bingkai.current)
+    menahan.current = true
+    setPetunjuk(false)
     const t0 = performance.now()
     const detak = () => {
       const p = Math.min(1, (performance.now() - t0) / LAMA_TAHAN_MS)
       setPersen(p)
       if (p >= 1) {
-        batal()
+        berhenti()
         onBuka()
       } else bingkai.current = requestAnimationFrame(detak)
     }
     bingkai.current = requestAnimationFrame(detak)
   }
 
-  useEffect(() => () => cancelAnimationFrame(bingkai.current), [])
+  useEffect(
+    () => () => {
+      cancelAnimationFrame(bingkai.current)
+      clearTimeout(timerPetunjuk.current)
+    },
+    [],
+  )
 
   return (
     <button
       type="button"
-      className="tombol-gerbang"
+      className={`tombol-gerbang ${petunjuk ? 'petunjuk' : ''}`}
       style={{ '--p': persen } as CSSProperties}
       aria-label="Untuk orang tua. Tahan 3 detik untuk membuka."
       onPointerDown={mulai}
-      onPointerUp={batal}
-      onPointerLeave={batal}
-      onPointerCancel={batal}
+      onPointerUp={lepas}
+      onPointerLeave={lepas}
+      onPointerCancel={lepas}
       onContextMenu={(e) => e.preventDefault()}
       onKeyDown={(e) => {
         if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) {
@@ -70,9 +95,9 @@ export function GerbangOrtu({ onBuka }: { onBuka: () => void }) {
           mulai()
         }
       }}
-      onKeyUp={batal}
+      onKeyUp={lepas}
     >
-      {persen > 0 ? 'Tahan terus…' : 'Untuk orang tua'}
+      {persen > 0 ? 'Tahan terus…' : petunjuk ? 'Tahan 3 detik' : 'Untuk orang tua'}
     </button>
   )
 }
