@@ -1,0 +1,811 @@
+/*
+ * Alasan keputusan desain (antislop R-31):
+ * - Latar kertas hangat: huruf tampil seperti di kartu cetak, tenang untuk mata anak.
+ * - Satu aksen terakota, khusus untuk titik bunyi & aksi utama: anak belajar
+ *   "yang berwarna = yang bisa diketuk / berbunyi".
+ * - Hijau daun hanya untuk status "berhasil/selesai", tidak dipakai di tempat lain.
+ * - Andika: font SIL untuk pembaca pemula, "a" dan "g" bertingkat satu seperti tulisan tangan.
+ * - Bayangan tipis hanya di kartu yang bisa diketuk: menandai benda fisik yang bisa ditekan.
+ * - Tema terang saja: metafora kertas & kartu cetak, dan konsistensi tampilan untuk anak.
+ * Kontras (WCAG AA): tinta/kertas 13:1, tinta-lembut/kertas 6,4:1, aksen/kertas 5,3:1,
+ * putih/aksen 6,0:1, daun/kertas 5,3:1.
+ */
+:root {
+  --kertas: #f6f1e7;
+  --kartu: #fffaf1;
+  --tinta: #2b2622;
+  --tinta-lembut: #5e554c;
+  --aksen: #a3481f;
+  --aksen-tekan: #87391a;
+  --aksen-tipis: #f1dccd;
+  --daun: #4f6b4c;
+  --daun-tipis: #dde7d6;
+  --garis: #e3d9c8;
+  --bahaya: #9b2c2c;
+  --bayang: 0 2px 0 #e0d4bf, 0 6px 18px rgb(80 60 30 / 0.08);
+  --huruf-besar: clamp(6rem, 30vmin, 15rem);
+  --huruf-sedang: clamp(3.5rem, 17vmin, 8rem);
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--kertas);
+  color: var(--tinta);
+  font-family: 'Andika', system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--aksen);
+  outline-offset: 3px;
+}
+
+/* ---------- Kerangka layar anak (tanpa scroll) ---------- */
+
+.layar {
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+    max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  gap: 8px;
+  overflow: hidden;
+}
+
+.bilah-atas {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+}
+
+.bilah-kiri {
+  min-width: 0;
+}
+
+.judul-tahap {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.panggung {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2.5vmin, 24px);
+  min-height: 0;
+  text-align: center;
+}
+
+.aksi {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: 64px;
+}
+
+.instruksi {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--tinta-lembut);
+  font-size: clamp(1rem, 2.6vmin, 1.25rem);
+}
+
+/* ---------- Tombol ---------- */
+
+.tombol,
+.tombol-kedua,
+.tombol-bahaya {
+  min-height: 64px;
+  padding: 0 28px;
+  border-radius: 16px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border: 2px solid transparent;
+}
+
+.tombol {
+  background: var(--aksen);
+  color: #fff;
+  box-shadow: 0 3px 0 var(--aksen-tekan);
+}
+
+.tombol:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--aksen-tekan);
+}
+
+.tombol:disabled {
+  background: var(--garis);
+  color: var(--tinta-lembut);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.tombol-kedua {
+  background: var(--kartu);
+  border-color: var(--garis);
+}
+
+.tombol-kedua:active {
+  background: var(--garis);
+}
+
+.tombol-bahaya {
+  background: var(--kartu);
+  border-color: var(--bahaya);
+  color: var(--bahaya);
+}
+
+.tombol-mulai {
+  min-width: min(100%, 320px);
+  min-height: 76px;
+  font-size: 1.5rem;
+}
+
+/* Gerbang orang tua: isi terakota tumbuh selama ditahan. */
+.tombol-gerbang {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--garis);
+  color: var(--tinta-lembut);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  background: linear-gradient(to right, var(--aksen-tipis) calc(var(--p, 0) * 100%), var(--kartu) 0);
+  -webkit-touch-callout: none;
+}
+
+/* ---------- Kartu bunyi (motif identitas: titik & busur bunyi) ---------- */
+
+.kartu-bunyi {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--kartu);
+  border: 2px solid var(--garis);
+  border-radius: 28px;
+  box-shadow: var(--bayang);
+  line-height: 1;
+}
+
+.kartu-bunyi:active {
+  transform: translateY(2px);
+}
+
+.kartu-bunyi .huruf {
+  font-weight: 700;
+}
+
+.kartu-bunyi.ukuran-besar {
+  min-width: calc(var(--huruf-besar) * 0.95);
+  padding: clamp(8px, 2vmin, 20px) clamp(16px, 4vmin, 40px) clamp(18px, 4vmin, 36px);
+  font-size: var(--huruf-besar);
+}
+
+.kartu-bunyi.ukuran-sedang {
+  min-width: max(96px, calc(var(--huruf-sedang) * 1.5));
+  min-height: max(96px, calc(var(--huruf-sedang) * 1.5));
+  border-radius: 22px;
+  font-size: var(--huruf-sedang);
+}
+
+.tanda {
+  display: block;
+  background: var(--aksen);
+}
+
+.tanda-titik {
+  width: clamp(12px, 2.6vmin, 22px);
+  height: clamp(12px, 2.6vmin, 22px);
+  border-radius: 50%;
+  margin-top: clamp(4px, 1.2vmin, 12px);
+}
+
+.tanda-busur {
+  width: 70%;
+  height: clamp(10px, 2.2vmin, 18px);
+  margin-top: clamp(4px, 1.2vmin, 12px);
+  background: none;
+  border: clamp(3px, 0.8vmin, 6px) solid var(--aksen);
+  border-top: 0;
+  border-radius: 0 0 999px 999px;
+}
+
+.kartu-bunyi.sudah {
+  border-color: var(--aksen);
+}
+
+.kartu-bunyi.benar,
+.kartu-gambar.benar {
+  border-color: var(--daun);
+  background: var(--daun-tipis);
+}
+
+/* ---------- Pilihan (temukan & cek) ---------- */
+
+.deret-pilihan {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(12px, 3vmin, 32px);
+}
+
+.kartu-gambar {
+  min-width: max(96px, 22vmin);
+  min-height: max(96px, 22vmin);
+  border-radius: 22px;
+  border: 2px solid var(--garis);
+  background: var(--kartu);
+  box-shadow: var(--bayang);
+  font-size: clamp(3rem, 13vmin, 6.5rem);
+  line-height: 1;
+}
+
+.kata-tulisan {
+  margin: 0;
+  font-size: clamp(3.5rem, 15vmin, 8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.umpan {
+  margin: 0;
+  min-height: 1.6em;
+  font-size: clamp(1.1rem, 3vmin, 1.5rem);
+  font-weight: 700;
+}
+
+.umpan-baik {
+  color: var(--daun);
+}
+
+.umpan-coba {
+  color: var(--tinta-lembut);
+}
+
+/* ---------- Gabung & baca: jarak menutup saat bunyi digabung ---------- */
+
+.rangkai {
+  display: flex;
+  justify-content: center;
+  gap: clamp(28px, 10vmin, 120px);
+  transition: gap 450ms ease-in-out;
+}
+
+.rangkai.tergabung {
+  gap: 0;
+}
+
+/* Saat tergabung, huruf dirapatkan agar terbaca sebagai satu suku kata ("ma"), bukan "m a". */
+.rangkai .kartu-bunyi {
+  transition: min-width 450ms ease-in-out, padding 450ms ease-in-out;
+}
+
+.rangkai.tergabung .kartu-bunyi:not(:last-child) {
+  min-width: 0;
+  padding-right: 0.04em;
+}
+
+.rangkai.tergabung .kartu-bunyi:not(:first-child) {
+  min-width: 0;
+  padding-left: 0.04em;
+}
+
+.rangkai.tergabung .kartu-bunyi:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+}
+
+.rangkai.tergabung .kartu-bunyi:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+}
+
+.rangkai-suku .kartu-bunyi.ukuran-besar {
+  font-size: var(--huruf-sedang);
+  min-width: calc(var(--huruf-sedang) * 1.6);
+}
+
+.baca {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(16px, 4vmin, 48px);
+}
+
+.gambar {
+  font-size: clamp(4rem, 18vmin, 9rem);
+  line-height: 1;
+}
+
+/* ---------- Petunjuk orang tua ---------- */
+
+.petunjuk-ortu {
+  margin: 0;
+  max-width: 44ch;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1.5px dashed var(--aksen);
+  background: var(--kartu);
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+/* ---------- Kemajuan langkah ---------- */
+
+.kemajuan {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.kemajuan-label {
+  font-weight: 700;
+}
+
+.kemajuan-titik {
+  display: flex;
+  gap: 6px;
+}
+
+.kemajuan-titik span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--tinta-lembut);
+}
+
+.kemajuan-titik .lewat {
+  background: var(--tinta-lembut);
+}
+
+.kemajuan-titik .kini {
+  background: var(--aksen);
+  border-color: var(--aksen);
+}
+
+/* ---------- Beranda: jalur huruf ---------- */
+
+.jalur {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  justify-content: center;
+  gap: clamp(8px, 2vmin, 18px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Ponsel tegak: enam huruf dalam 3 x 2, kartu "baca" selebar penuh sebagai tujuan akhir. */
+@media (max-width: 560px) {
+  .jalur {
+    grid-template-columns: repeat(3, minmax(72px, 96px));
+  }
+  .jalur-huruf {
+    padding-block: 12px;
+  }
+  .jalur-huruf .huruf {
+    font-size: 3.2rem;
+  }
+  .jalur-tantangan {
+    grid-column: 1 / -1;
+    padding-block: 12px;
+  }
+}
+
+.jalur-huruf,
+.jalur-tantangan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(64px, 12vmin, 120px);
+  padding: clamp(6px, 1.5vmin, 14px) clamp(8px, 2vmin, 16px);
+  border-radius: 20px;
+  border: 2px solid var(--garis);
+  background: transparent;
+  color: var(--tinta-lembut);
+  line-height: 1;
+}
+
+.jalur-huruf .huruf {
+  font-size: clamp(2.4rem, 9vmin, 4.5rem);
+  font-weight: 700;
+}
+
+.jalur-huruf .tanda-titik {
+  background: var(--garis);
+}
+
+.jalur-huruf.selesai {
+  background: var(--kartu);
+  color: var(--tinta);
+}
+
+.jalur-huruf.selesai .tanda-titik {
+  background: var(--daun);
+}
+
+.jalur-huruf.kini,
+.jalur-tantangan.kini {
+  background: var(--kartu);
+  border-color: var(--aksen);
+  color: var(--tinta);
+  box-shadow: var(--bayang);
+}
+
+.jalur-huruf.kini .tanda-titik {
+  background: var(--aksen);
+}
+
+.jalur-tantangan {
+  gap: clamp(6px, 1.5vmin, 12px);
+}
+
+.jalur-tantangan.selesai {
+  background: var(--daun-tipis);
+  border-color: var(--daun);
+  color: var(--tinta);
+}
+
+.jalur-tantangan-kata {
+  font-size: clamp(1.6rem, 6vmin, 3rem);
+  font-weight: 700;
+}
+
+.jalur-hari,
+.hasil-angka {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.jalur-hari span,
+.hasil-angka span {
+  width: clamp(12px, 2.4vmin, 20px);
+  height: clamp(12px, 2.4vmin, 20px);
+  border-radius: 50%;
+  border: 2px solid var(--daun);
+}
+
+.jalur-hari .isi,
+.hasil-angka .isi {
+  background: var(--daun);
+}
+
+.pesan-beranda {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--tinta-lembut);
+}
+
+.pesan-beranda b {
+  color: var(--tinta);
+}
+
+/* ---------- Hasil & akhir sesi ---------- */
+
+.hasil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.hasil-judul {
+  margin: 0;
+  font-size: clamp(2.2rem, 8vmin, 4rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.hasil-angka {
+  margin: 0;
+}
+
+/* ---------- Area orang tua (boleh scroll) ---------- */
+
+.halaman-ortu {
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+}
+
+.ortu-isi {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.ortu-isi h1 {
+  margin: 0.4em 0 0.5em;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  line-height: 1.2;
+}
+
+.ortu-isi h2 {
+  margin: 1.8em 0 0.4em;
+  font-size: 1.3rem;
+}
+
+.ortu-isi section {
+  border-top: 1.5px solid var(--garis);
+}
+
+.ortu-kepala {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ortu-kepala .tombol-kedua {
+  min-height: 48px;
+  font-size: 1rem;
+}
+
+.ortu-lead {
+  font-size: 1.15rem;
+}
+
+.ortu-daftar {
+  padding-left: 1.3em;
+}
+
+.ortu-daftar li {
+  margin-bottom: 0.7em;
+}
+
+.ortu-catatan,
+.ortu-kosong {
+  color: var(--tinta-lembut);
+}
+
+.contoh {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--aksen-tipis);
+  font-weight: 700;
+}
+
+.ortu-huruf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.ortu-huruf li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 10px;
+  border: 1.5px solid var(--garis);
+  color: var(--tinta-lembut);
+  font-size: 0.95rem;
+}
+
+.ortu-huruf li.selesai {
+  border-color: var(--daun);
+  background: var(--daun-tipis);
+  color: var(--tinta);
+}
+
+.ortu-tabel {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.ortu-tabel th,
+.ortu-tabel td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--garis);
+  text-align: left;
+}
+
+.ortu-file {
+  overflow-wrap: anywhere;
+  color: var(--tinta-lembut);
+  font-size: 0.9rem;
+}
+
+details summary {
+  cursor: pointer;
+  padding: 10px 0;
+  color: var(--aksen);
+  font-weight: 700;
+}
+
+.ortu-aksi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ortu-aksi > button {
+  min-height: 52px;
+  font-size: 1.05rem;
+}
+
+.dialog {
+  max-width: min(440px, calc(100vw - 32px));
+  border: 0;
+  border-radius: 20px;
+  padding: 24px;
+  background: var(--kartu);
+  color: var(--tinta);
+}
+
+.dialog::backdrop {
+  background: rgb(43 38 34 / 0.45);
+}
+
+.dialog h2 {
+  margin-top: 0;
+}
+
+.memuat {
+  display: grid;
+  place-items: center;
+  height: 100dvh;
+  color: var(--tinta-lembut);
+}
+
+/* ---------- Gerak (MOTION 2: hanya untuk umpan balik & penggabungan bunyi) ---------- */
+
+/* Goyang pelan: tanda "belum tepat" tanpa warna merah atau suara hukuman. */
+.goyang {
+  animation: goyang 320ms ease-in-out;
+}
+
+@keyframes goyang {
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* Gambar muncul setelah kata dibaca: hadiah dari membaca, bukan petunjuk sebelum membaca. */
+.muncul {
+  animation: muncul 320ms ease-out 350ms both;
+}
+
+@keyframes muncul {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* Ponsel landscape: ruang vertikal sempit. */
+@media (max-height: 480px) {
+  :root {
+    --huruf-besar: clamp(4rem, 22vh, 7rem);
+    --huruf-sedang: clamp(2.6rem, 14vh, 4rem);
+  }
+  .layar {
+    gap: 4px;
+  }
+  .petunjuk-ortu {
+    max-width: 70ch;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  .panggung {
+    gap: 6px;
+  }
+  .instruksi {
+    max-width: 60ch;
+    font-size: 0.95rem;
+  }
+  .tombol,
+  .tombol-kedua {
+    min-height: 56px;
+  }
+  .aksi {
+    min-height: 56px;
+  }
+  .kata-tulisan {
+    font-size: 3rem;
+  }
+  .kartu-gambar {
+    min-width: 80px;
+    min-height: 80px;
+    font-size: 3rem;
+  }
+  .umpan {
+    font-size: 1.05rem;
+  }
+}
+
+/* Ponsel mendatar: tombol aksi pindah ke sisi kanan agar seluruh tinggi layar untuk huruf. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .layar {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
+    column-gap: 16px;
+  }
+  .bilah-atas {
+    grid-column: 1 / -1;
+  }
+  .aksi {
+    grid-column: 2;
+    grid-row: 2;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    min-height: 0;
+    max-width: 200px;
+  }
+  .aksi > button {
+    padding: 0 18px;
+    font-size: 1.1rem;
+  }
+  .tombol-mulai {
+    min-width: 0;
+  }
+  .jalur {
+    grid-template-columns: repeat(3, minmax(56px, 76px));
+  }
+  .jalur-huruf {
+    padding-block: 6px;
+  }
+  .jalur-huruf .huruf {
+    font-size: 2.2rem;
+  }
+  .jalur-tantangan {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    gap: 12px;
+    padding-block: 6px;
+  }
+  .jalur-tantangan-kata {
+    font-size: 1.6rem;
+  }
+}
