@@ -87,7 +87,7 @@ Inggris/Mandarin di rumah. App tidak boleh memaksa semua mulai dari Bahasa Indon
   tepuk suku kata, mencari kata berima.
 
 **Keunggulan Bahasa Indonesia:** [Bukti kuat] ejaan Indonesia **transparan** (satu huruf = satu
-bunyi, hampir tanpa pengecualian). Ini membuat **metode fonik berbasis suku kata** sangat cepat
+bunyi, hampir tanpa pengecualian; pengecualiannya dicatat di `SPEK-MVP-FONIK.md` §2). Ini membuat **metode fonik berbasis suku kata** sangat cepat
 berhasil (ba-bi-bu-be-bo → ba-ju, bu-ku). Jauh lebih mudah dibanding Bahasa Inggris yang tidak
 transparan.
 
@@ -229,9 +229,12 @@ Jalur L2 (bahasa kedua) mengikuti struktur yang sama, dimulai setelah L1 stabil.
       Mandarin = di luar lingkup model fonik (logografis), diperlakukan sebagai konteks bahasa
       rumah untuk anak Cindo, bukan jalur calistung.
 - [x] **Device-first: tablet** (area sentuh & tracing); ponsel sekunder.
-- [x] **Stack: Flutter (Dart)** — satu basis kode tablet/ponsel/web, cocok dipelajari pemula,
-      kuat untuk interaksi kustom. Backend ditunda (fase awal 100% lokal di perangkat).
-- [x] **Tim: solo founder, belajar dari nol** → lingkup dipotong keras (lihat §10).
+- [x] **Platform: PWA (web)** yang responsif untuk ponsel, tablet, dan laptop, dengan prioritas
+      desain tablet. Stack: React + Vite + TypeScript. Backend ditunda (MVP 100% lokal).
+      *(Sebelumnya Flutter. Diganti karena app dibangun lewat vibe coding: stack web punya
+      lebih banyak data latih AI dan bisa di-preview instan di browser.)*
+- [x] **Tim: solo founder, membangun lewat vibe coding** → lingkup dipotong keras (lihat §9).
+      Aturan pedagogi untuk AI dicatat di `CLAUDE.md`.
 
 ## 9. Lingkup MVP & Jalur Eksekusi (proposal)
 
@@ -242,7 +245,8 @@ membangun besar.
 **Lingkup MVP:**
 
 > **Jalur Membaca · Fase Awal (4–5 th) · Bahasa Indonesia.**
-> Loop fonik inti: bunyi huruf → blending suku kata (ba, bu, bi) → kata pertama (bu-ku).
+> Loop fonik inti: bunyi huruf → blending suku kata (ma, su, ni) → kata pertama (ma-ma, su-su).
+> Rincian lengkapnya ada di `SPEK-MVP-FONIK.md`.
 > Didampingi orang tua. Audio hybrid. Tanpa backend (lokal).
 
 Semua yang lain — menulis, berhitung, fase lain, adaptif penuh, bahasa Inggris — adalah
@@ -250,19 +254,18 @@ Semua yang lain — menulis, berhitung, fase lain, adaptif penuh, bahasa Inggris
 
 **Urutan eksekusi (validasi dulu):**
 
-1. **Prototipe non-app** (1–2 minggu, ~nol biaya): kartu cetak + audio ponsel, uji urutan
-   fonik ke 2–3 anak nyata. Membuktikan *metode* sebelum menulis kode.
-2. **Belajar Flutter sambil membangun MVP loop** — target web dulu (bisa diuji dari browser
-   tablet, tanpa rilis store).
+1. **Kunci spec pedagogi** (urutan bunyi, loop, aturan mastery) di `SPEK-MVP-FONIK.md`.
+   Spec ini yang diberikan ke AI. Prototipe kertas jadi opsional, karena prototipe digital
+   lewat vibe coding pun sudah murah.
+2. **Vibe-code PWA MVP dari spec**, lalu rekam ±27 audio fonem & suku kata.
 3. **Uji MVP digital** ke anak yang sama; bandingkan dengan prototipe kertas.
 4. Baru putuskan ekspansi berdasarkan hasil.
 
 ## 10. Pertanyaan Terbuka (berikutnya)
 
 - Model monetisasi (yang tidak bertabrakan dengan prinsip anti-adiktif).
-- Detail urutan fonem Bahasa Indonesia untuk Fase Awal (himpunan & urutan pengenalan).
-- Bentuk & kedalaman penilaian penguasaan (mastery check) dalam app.
-- Produksi rekaman fonem manusia: siapa penutur, standar kualitas, berapa bunyi.
+- Validasi urutan bunyi & ambang mastery (`SPEK-MVP-FONIK.md` §3 & §5) lewat uji ke anak.
+- Produksi rekaman fonem: siapa penuturnya (jumlah & standar sudah ditetapkan di spec §6).
 - Pilihan penyedia AI TTS Bahasa Indonesia & lisensinya.
 - Validasi dengan pendidik/ahli PAUD sebelum rilis.
 
