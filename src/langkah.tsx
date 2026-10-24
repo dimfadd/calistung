@@ -5,6 +5,7 @@ import {
   PENGECOH,
   SOAL_PER_SET,
   UNITS,
+  jalurGambar,
   kataSiapCek,
   type Huruf,
 } from './data/tahap1'
@@ -389,11 +390,7 @@ function Baca({ k, kata, onSelesai }: { k: Kerangka; kata: string; onSelesai: ()
             />
           ))}
         </div>
-        {tergabung && (
-          <div className="gambar muncul" role="img" aria-label={data.label}>
-            {data.gambar}
-          </div>
-        )}
+        {tergabung && <img className="gambar muncul" src={jalurGambar(data.gambar)} alt={data.label} />}
       </div>
       <PetunjukOrtu tampil={ada?.includes(false) ?? false}>Ucapkan tiap bagian: {data.suku.join(', ')}.</PetunjukOrtu>
     </Bingkai>
@@ -484,7 +481,7 @@ export function Cek({
             aria-label={o.label}
             onClick={() => pilih(o.label)}
           >
-            <span aria-hidden="true">{o.gambar}</span>
+            <img src={jalurGambar(o.gambar)} alt="" draggable={false} />
           </button>
         ))}
       </div>

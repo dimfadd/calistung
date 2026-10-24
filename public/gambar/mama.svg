@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <title>mama</title>
+  <path d="M50 96C50 46 150 46 150 96L152 156C152 166 142 170 134 166L66 166C58 170 48 166 48 156Z" fill="#3b2a20"/>
+  <path d="M36 200C36 162 64 146 100 146C136 146 164 162 164 200Z" fill="#f08a6b"/>
+  <path d="M84 146C88 158 112 158 116 146" fill="#e0a878"/>
+  <rect x="88" y="122" width="24" height="30" rx="10" fill="#c98a5c"/>
+  <ellipse cx="100" cy="96" rx="38" ry="42" fill="#e0a878"/>
+  <path d="M62 94C58 58 88 48 102 56C118 48 144 62 138 94C130 76 114 68 100 70C86 68 70 76 62 94Z" fill="#3b2a20"/>
+  <circle cx="86" cy="98" r="4.5" fill="#2b2622"/>
+  <circle cx="114" cy="98" r="4.5" fill="#2b2622"/>
+  <circle cx="77" cy="112" r="7" fill="#f08a6b" opacity=".5"/>
+  <circle cx="123" cy="112" r="7" fill="#f08a6b" opacity=".5"/>
+  <path d="M89 116Q100 127 111 116" fill="none" stroke="#7a3b2e" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="62" cy="112" r="4.5" fill="#e9b44c"/>
+  <circle cx="138" cy="112" r="4.5" fill="#e9b44c"/>
+</svg>

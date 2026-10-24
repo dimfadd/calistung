@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <title>bumi</title>
+  <defs>
+    <clipPath id="bola-bumi"><circle cx="100" cy="100" r="80"/></clipPath>
+  </defs>
+  <circle cx="100" cy="100" r="80" fill="#4aa3df"/>
+  <g clip-path="url(#bola-bumi)" fill="#6cbf5c">
+    <path d="M58 44C80 34 104 44 100 62C96 78 80 76 76 92C72 108 52 110 40 96C26 80 36 54 58 44Z"/>
+    <path d="M114 88C132 78 156 88 162 108C168 130 150 152 130 154C114 156 112 140 116 128C120 116 100 102 114 88Z"/>
+    <path d="M68 128C80 122 94 132 90 146C86 160 70 164 62 152C56 142 60 132 68 128Z"/>
+    <path d="M140 30C152 30 166 42 160 52C154 60 140 56 136 48C132 40 132 30 140 30Z"/>
+  </g>
+  <path d="M40 86A62 62 0 0 1 92 36" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="8" stroke-linecap="round"/>
+</svg>

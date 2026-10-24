@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <title>papa</title>
+  <path d="M32 200C32 160 62 146 100 146C138 146 168 160 168 200Z" fill="#3fa7a0"/>
+  <path d="M84 146L100 168L116 146Z" fill="#fdf6e9"/>
+  <rect x="87" y="122" width="26" height="30" rx="10" fill="#c98a5c"/>
+  <circle cx="60" cy="100" r="9" fill="#d6996a"/>
+  <circle cx="140" cy="100" r="9" fill="#d6996a"/>
+  <ellipse cx="100" cy="98" rx="40" ry="42" fill="#e0a878"/>
+  <path d="M60 92C56 50 144 50 140 92C134 72 118 64 100 64C82 64 66 72 60 92Z" fill="#3b2a20"/>
+  <path d="M77 86L93 84M107 84L123 86" stroke="#3b2a20" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="86" cy="98" r="4.5" fill="#2b2622"/>
+  <circle cx="114" cy="98" r="4.5" fill="#2b2622"/>
+  <path d="M82 116C90 108 110 108 118 116C110 120 90 120 82 116Z" fill="#3b2a20"/>
+  <path d="M90 124Q100 132 110 124" fill="none" stroke="#7a3b2e" stroke-width="4" stroke-linecap="round"/>
+</svg>

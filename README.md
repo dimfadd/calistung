@@ -40,7 +40,9 @@ npm run preview    # cek hasil build secara lokal
 
 ## Yang masih sementara
 
-- Gambar kata memakai emoji; harus diganti ilustrasi asli sebelum diuji ke anak.
+- Gambar kata (`public/gambar/*.svg`) adalah ilustrasi SVG sederhana tahap prototipe. Untuk
+  produk, ganti dengan karya ilustrator: cukup timpa file dengan nama yang sama (viewBox
+  persegi, latar transparan), tanpa mengubah kode.
 - Instruksi dan kata memakai suara TTS perangkat. Di perangkat tanpa suara Bahasa Indonesia,
   instruksi hanya tampil sebagai teks.
 - Ambang penguasaan (4 dari 5, di 2 hari berbeda) masih tebakan awal dan perlu disetel lewat uji.

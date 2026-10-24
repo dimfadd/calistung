@@ -298,8 +298,8 @@ export function AreaOrtu({
         <section aria-labelledby="judul-prototipe">
           <h2 id="judul-prototipe">Tentang prototipe ini</h2>
           <p>
-            Gambar kata (mama, bumi, ubi, dan lainnya) masih memakai emoji sebagai gambar sementara. Bentuk emoji
-            berbeda di tiap perangkat, dan akan diganti ilustrasi asli sebelum diuji ke anak.
+            Gambar kata (mama, bumi, ubi, dan lainnya) adalah ilustrasi sederhana buatan tahap prototipe, belum
+            karya ilustrator.
           </p>
         </section>
 

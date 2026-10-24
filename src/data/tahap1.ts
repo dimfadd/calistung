@@ -16,7 +16,7 @@ export interface Unit {
 export interface Kata {
   tulisan: string
   suku: string[]
-  /** Gambar sementara (emoji). Ganti dengan ilustrasi asli sebelum uji ke anak. */
+  /** Nama file ilustrasi di public/gambar/ (SVG). Bisa ditimpa ilustrasi baru tanpa ubah kode. */
   gambar: string
   /** Label gambar untuk pembaca layar. */
   label: string
@@ -52,20 +52,22 @@ export const UNITS: Unit[] = [
 ]
 
 export const KATA: Record<string, Kata> = {
-  mama: { tulisan: 'mama', suku: ['ma', 'ma'], gambar: '👩', label: 'mama', bisaDicek: true },
-  ibu: { tulisan: 'ibu', suku: ['i', 'bu'], gambar: '👩‍🍼', label: 'ibu', bisaDicek: false },
-  ubi: { tulisan: 'ubi', suku: ['u', 'bi'], gambar: '🍠', label: 'ubi', bisaDicek: true },
-  bumi: { tulisan: 'bumi', suku: ['bu', 'mi'], gambar: '🌍', label: 'bumi', bisaDicek: true },
-  papa: { tulisan: 'papa', suku: ['pa', 'pa'], gambar: '👨', label: 'papa', bisaDicek: true },
-  pipi: { tulisan: 'pipi', suku: ['pi', 'pi'], gambar: '😊', label: 'pipi', bisaDicek: true },
+  mama: { tulisan: 'mama', suku: ['ma', 'ma'], gambar: 'mama.svg', label: 'mama', bisaDicek: true },
+  ibu: { tulisan: 'ibu', suku: ['i', 'bu'], gambar: 'ibu.svg', label: 'ibu', bisaDicek: false },
+  ubi: { tulisan: 'ubi', suku: ['u', 'bi'], gambar: 'ubi.svg', label: 'ubi', bisaDicek: true },
+  bumi: { tulisan: 'bumi', suku: ['bu', 'mi'], gambar: 'bumi.svg', label: 'bumi', bisaDicek: true },
+  papa: { tulisan: 'papa', suku: ['pa', 'pa'], gambar: 'papa.svg', label: 'papa', bisaDicek: true },
+  pipi: { tulisan: 'pipi', suku: ['pi', 'pi'], gambar: 'pipi.svg', label: 'pipi', bisaDicek: true },
 }
 
 /** Gambar pengecoh untuk soal cek. Kata-katanya tidak pernah ditampilkan. */
 export const PENGECOH = [
-  { gambar: '⚽', label: 'bola' },
-  { gambar: '🐟', label: 'ikan' },
-  { gambar: '🍌', label: 'pisang' },
+  { gambar: 'bola.svg', label: 'bola' },
+  { gambar: 'ikan.svg', label: 'ikan' },
+  { gambar: 'pisang.svg', label: 'pisang' },
 ]
+
+export const jalurGambar = (file: string) => `${import.meta.env.BASE_URL}gambar/${file}`
 
 export const HURUF_TAHAP1: Huruf[] = UNITS.map((u) => u.huruf)
 

@@ -296,14 +296,22 @@ button {
 }
 
 .kartu-gambar {
+  --ukuran-gambar: clamp(76px, 20vmin, 156px);
+  display: grid;
+  place-items: center;
   min-width: max(96px, 22vmin);
   min-height: max(96px, 22vmin);
+  padding: 8px;
   border-radius: 22px;
   border: 2px solid var(--garis);
   background: var(--kartu);
   box-shadow: var(--bayang);
-  font-size: clamp(3rem, 13vmin, 6.5rem);
-  line-height: 1;
+}
+
+.kartu-gambar img {
+  width: var(--ukuran-gambar);
+  height: var(--ukuran-gambar);
+  pointer-events: none;
 }
 
 .kata-tulisan {
@@ -384,8 +392,8 @@ button {
 }
 
 .gambar {
-  font-size: clamp(4rem, 18vmin, 9rem);
-  line-height: 1;
+  width: clamp(88px, 22vmin, 180px);
+  height: clamp(88px, 22vmin, 180px);
 }
 
 /* ---------- Petunjuk orang tua ---------- */
@@ -817,9 +825,10 @@ details summary {
     font-size: 3rem;
   }
   .kartu-gambar {
+    --ukuran-gambar: 60px;
     min-width: 80px;
     min-height: 80px;
-    font-size: 3rem;
+    padding: 4px;
   }
   .umpan {
     font-size: 1.05rem;
