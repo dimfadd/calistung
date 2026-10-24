@@ -1,12 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <title>ikan</title>
-  <path d="M142 100L182 70C176 90 176 110 182 130Z" fill="#e06a4a"/>
-  <path d="M76 66C88 44 118 46 126 70Z" fill="#e06a4a"/>
-  <path d="M24 100C44 58 118 54 150 100C118 146 44 142 24 100Z" fill="#f08a6b"/>
-  <path d="M30 108C56 132 116 134 144 108C116 126 58 126 30 108Z" fill="#f6b49d"/>
-  <path d="M86 84Q96 100 86 116M104 82Q114 100 104 118M122 86Q130 100 122 114" fill="none" stroke="#e06a4a" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="52" cy="92" r="9" fill="#fff"/>
-  <circle cx="50" cy="92" r="4.5" fill="#2b2622"/>
-  <path d="M28 104Q34 108 40 104" fill="none" stroke="#7a3b2e" stroke-width="3" stroke-linecap="round"/>
-  <path d="M84 128C90 140 102 142 108 132Z" fill="#e06a4a"/>
+<g transform="translate(100 100) scale(1.08) translate(-100 -100)">
+<g stroke="#3b2a24" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+<path d="M136 98L182 58C188 78 176 92 170 100C176 108 188 122 182 142Z" fill="#e8742c"/>
+<path d="M66 70C78 38 112 40 124 74Z" fill="#e8742c"/>
+<path d="M78 128C82 150 100 156 108 132Z" fill="#e8742c"/>
+<path d="M18 102C34 62 96 50 140 88L146 100L140 112C96 150 34 142 18 102Z" fill="#f7953f"/>
+<path d="M26 112C50 134 100 138 136 114C100 144 44 142 26 112Z" fill="#fbc06e" stroke="none"/>
+<path d="M70 70C82 88 82 116 70 132" fill="none"/>
+<path d="M96 80Q104 88 96 96M112 88Q120 96 112 104M96 104Q104 112 96 120" fill="none" stroke="#c75a1e" stroke-width="3"/>
+<circle cx="46" cy="92" r="11" fill="#fff"/>
+<path d="M20 106L30 104" fill="none"/>
+</g>
+<circle cx="44" cy="92" r="5.5" fill="#2e1f1a"/><circle cx="46" cy="90" r="2" fill="#fff"/>
+</g>
 </svg>

@@ -1,8 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <title>pisang</title>
-  <path d="M46 52L40 32C38 26 48 22 52 28L60 48Z" fill="#7a5a36"/>
-  <path d="M42 56C40 128 100 176 168 152C176 150 176 140 168 138C114 148 70 116 62 54C60 44 42 44 42 56Z" fill="#f2c94c"/>
-  <path d="M62 60C70 118 112 148 166 140C112 158 62 124 54 62Z" fill="#dba92a"/>
-  <path d="M52 74C56 112 82 140 116 150" fill="none" stroke="#fbe08a" stroke-width="6" stroke-linecap="round"/>
-  <circle cx="171" cy="145" r="5" fill="#5b3d22"/>
+<defs><path id="b" d="M0 0C6 62 60 100 140 86L146 80C90 78 34 46 22 -4Z"/></defs>
+<g transform="translate(22 20) scale(.84)" stroke="#3b2a24" stroke-width="4.6" stroke-linejoin="round" stroke-linecap="round">
+<g transform="translate(44 40) rotate(-12)"><use href="#b" fill="#f2bd2c"/><path d="M140 86L146 80" stroke-width="10"/></g>
+<g transform="translate(44 40) rotate(10)"><use href="#b" fill="#f7cc3a"/><path d="M140 86L146 80" stroke-width="10"/></g>
+<g transform="translate(44 40) rotate(32)"><use href="#b" fill="#fbd94c"/><path d="M140 86L146 80" stroke-width="10"/><path d="M14 20C30 54 66 76 110 78" fill="none" stroke="#fff3b0" stroke-width="5"/></g>
+<path d="M34 24L48 16L60 40L46 50Z" fill="#7d6a2c"/>
+</g>
 </svg>
